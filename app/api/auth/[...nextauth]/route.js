@@ -1,0 +1,81 @@
+import User from "@/models/user";
+import NextAuth from "next-auth/next";
+import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
+import GithubProvider from "next-auth/providers/github";
+import bcrypt from "bcryptjs";
+import connectMongoDB from "@/lib/mongodb";
+
+export const authOptions = {
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
+    GithubProvider({
+      clientId: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    }),
+    CredentialsProvider({
+      name: "credentials",
+      credentials: {},
+      async authorize(credentials) {
+        const { email, password } = credentials;
+        await connectMongoDB();
+        const user = await User.findOne({ email });
+        if (!user) return null;
+        const isValid = await bcrypt.compare(password, user.password);
+        if (!isValid) return null;
+        return user;
+      },
+    }),
+  ],
+  session: { strategy: "jwt" },
+  secret: process.env.NEXTAUTH_SECRET,
+  pages: { signIn: "/login" },
+  callbacks: {
+    async signIn({ user, account }) {
+      if (account.provider === "google") {
+        await connectMongoDB();
+        try {
+          const existingUser = await User.findOne({ email: user.email });
+
+          if (!existingUser) {
+            await User.create({
+              name: user.name,
+              email: user.email,
+              profileImage: user.image,
+            });
+          }
+          return true;
+        } catch (error) {
+          console.error("Error during sign-in:", error);
+          return false;
+        }
+      }
+      return true;
+    },
+
+    async jwt({ token, user }) {
+      await connectMongoDB();
+      const dbUser = await User.findOne({ email: token.email });
+
+      if (!dbUser) {
+        return token;
+      }
+      
+      token.id = dbUser._id.toString();
+      return token;
+    },
+
+    async session({ session, token }) {
+      session.user.id = token.id;
+      session.user.name = token.name;
+      session.user.email = token.email;
+      return session;
+    },
+  },
+};
+
+const handler = NextAuth(authOptions);
+export { handler as GET, handler as POST };
