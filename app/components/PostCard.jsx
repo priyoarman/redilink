@@ -61,7 +61,7 @@ export default function PostCard({ post }) {
   };
 
   return (
-    <div className="z-20 flex w-full flex-row gap-2 border-slate-300 bg-gray-50 shadow-md transition-all hover:bg-blue-50 hover:shadow-lg sm:gap-0">
+    <div className="z-20 flex w-full flex-row gap-2 border-slate-300 bg-gray-50 shadow-xs transition-all hover:bg-blue-50 hover:shadow-sm sm:gap-0">
       <div className="flex w-1/12 flex-col items-start justify-items-start pl-4 py-4">
         {post.authorImage ? (
           <img

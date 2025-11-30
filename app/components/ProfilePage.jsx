@@ -100,7 +100,7 @@ const ProfilePage = ({ posts }) => {
         <div className="pb-2">
           <div className="text-xl text-gray-800 font-bold">{session?.user?.name}</div>
           <div className="text-[17px] text-gray-700 font-medium">
-            {session?.user?.email}
+            {session?.user?.username ? `@${session.user.username}` : "@username"}
           </div>
         </div>
 
@@ -129,11 +129,11 @@ const ProfilePage = ({ posts }) => {
       <h2 className="text-gray-700 text-xl font-bold px-4 py-4 mb-4 border-y-1 border-gray-200">Posts</h2>
 
       {posts.length ? (
-        <div className="z-20 bg-gray-50 pb-12">
+        <div className="z-20 bg-gray-50 pb-2">
           {posts.map((post) => (
             <div
               key={post._id}
-              className="z-20 flex w-full flex-row gap-2 border-slate-300 bg-gray-50 shadow-md transition-all hover:bg-blue-50 hover:shadow-lg sm:gap-0"
+              className="z-20 flex w-full flex-row gap-2 border-slate-300 bg-gray-50 shadow-xs transition-all hover:bg-blue-50 hover:shadow-sm sm:gap-0"
             >
               <div className="flex w-1/12 flex-col items-start justify-items-start px-4 py-4">
                 <div className="flex h-10 w-10 rounded-full bg-neutral-600"></div>
