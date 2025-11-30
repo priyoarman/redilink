@@ -5,22 +5,51 @@ import { useRouter } from "next/navigation";
 
 const EditPostPage = ({ id, body }) => {
   const [newBody, setNewBody] = useState(body);
+  const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`/api/posts/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ newBody }),
-      });
+      let res;
+      if (image) {
+        const formData = new FormData();
+        formData.append("newBody", newBody);
+        formData.append("image", image);
+        res = await fetch(`/api/posts/${id}`, {
+          method: "PUT",
+          body: formData,
+        });
+      } else {
+        res = await fetch(`/api/posts/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ newBody }),
+        });
+      }
+
       if (!res.ok) throw new Error("Failed to update post");
+      setImage(null);
+      setImagePreview(null);
       router.refresh();
       router.push("/");
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  const removeImage = () => {
+    setImage(null);
+    setImagePreview(null);
   };
 
   return (
@@ -36,10 +65,36 @@ const EditPostPage = ({ id, body }) => {
           type="text"
           placeholder="What's on your mind?"
         />
-        <div className="flex flex-row justify-end-safe">
-          <button className="mx-2 my-2 h-10 cursor-pointer rounded-3xl bg-gray-500 px-4 text-sm font-bold text-white hover:bg-blue-400">
-            Update
-          </button>
+        {imagePreview && (
+          <div className="relative my-2">
+            <img src={imagePreview} alt="Preview" className="rounded-md" />
+            <button
+              type="button"
+              onClick={removeImage}
+              className="absolute top-2 right-2 bg-black bg-opacity-50 text-white rounded-full p-1"
+            >
+              &times;
+            </button>
+          </div>
+        )}
+
+        <div className="flex flex-row items-center justify-between gap-2">
+          <input
+            type="file"
+            id="editImageInput"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="hidden"
+          />
+          <label htmlFor="editImageInput" className="text-blue-500 cursor-pointer">
+            Add/Change Image
+          </label>
+
+          <div className="flex flex-row justify-end-safe">
+            <button className="mx-2 my-2 h-10 cursor-pointer rounded-3xl bg-gray-500 px-4 text-sm font-bold text-white hover:bg-blue-400">
+              Update
+            </button>
+          </div>
         </div>
       </form>
     </div>

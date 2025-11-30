@@ -5,6 +5,7 @@ import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
 import bcrypt from "bcryptjs";
 import connectMongoDB from "@/lib/mongodb";
+import { generateUniqueUsername } from "@/lib/username";
 
 export const authOptions = {
   providers: [
@@ -35,15 +36,17 @@ export const authOptions = {
   pages: { signIn: "/login" },
   callbacks: {
     async signIn({ user, account }) {
-      if (account.provider === "google") {
+      if (account.provider === "google" || account.provider === "github") {
         await connectMongoDB();
         try {
           const existingUser = await User.findOne({ email: user.email });
 
           if (!existingUser) {
+            const username = await generateUniqueUsername(user.name);
             await User.create({
               name: user.name,
               email: user.email,
+              username,
               profileImage: user.image,
             });
           }
@@ -63,8 +66,9 @@ export const authOptions = {
       if (!dbUser) {
         return token;
       }
-      
+
       token.id = dbUser._id.toString();
+      token.username = dbUser.username;
       return token;
     },
 
@@ -72,6 +76,7 @@ export const authOptions = {
       session.user.id = token.id;
       session.user.name = token.name;
       session.user.email = token.email;
+      session.user.username = token.username;
       return session;
     },
   },

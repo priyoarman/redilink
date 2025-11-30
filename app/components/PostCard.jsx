@@ -12,6 +12,7 @@ import {
   AiOutlineRetweet,
   AiOutlineEye,
 } from "react-icons/ai";
+import Image from "next/image";
 
 export default function PostCard({ post }) {
   const { data: session } = useSession();
@@ -19,6 +20,22 @@ export default function PostCard({ post }) {
 
   const [likesCount, setLikesCount] = useState(post.likesCount || 0);
   const [liked, setLiked] = useState(post.likedByMe);
+
+  let displayDate = "";
+  if (post?.createdAt) {
+    const createdAt = new Date(post.createdAt);
+    const now = new Date();
+    const diffMs = now - createdAt;
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+    if (diffDays <= 0) {
+      displayDate = "Today";
+    } else if (diffDays === 1) {
+      displayDate = "1d ago";
+    } else {
+      displayDate = `${diffDays}d ago`;
+    }
+  }
 
   const handleLike = async () => {
     if (!session) {
@@ -45,8 +62,18 @@ export default function PostCard({ post }) {
 
   return (
     <div className="z-20 flex w-full flex-row gap-2 border-slate-300 bg-gray-50 shadow-md transition-all hover:bg-blue-50 hover:shadow-lg sm:gap-0">
-      <div className="flex w-1/12 flex-col items-start justify-items-start px-4 py-4">
-        <div className="flex h-10 w-10 rounded-full bg-neutral-600"></div>
+      <div className="flex w-1/12 flex-col items-start justify-items-start pl-4 py-4">
+        {post.authorImage ? (
+          <img
+            src={post.authorImage}
+            alt={`${post.authorName || 'User'} avatar`}
+            className="h-10 w-10 rounded-full object-cover"
+          />
+        ) : (
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-600 text-white font-bold">
+            {post.authorName ? post.authorName.charAt(0).toUpperCase() : "U"}
+          </div>
+        )}
       </div>
 
       <div className="flex w-11/12 flex-col gap-4 p-4 sm:gap-2">
@@ -57,18 +84,18 @@ export default function PostCard({ post }) {
                 {post.authorName}
               </h2>
               <h3 className="cursor-pointer text-[16px] font-bold text-neutral-500 sm:text-lg">
-                {post.authorEmail}
+                @{post.authorUsername}
               </h3>
             </div>
 
-            <h4 className="mt-1 text-[12px] text-neutral-400 sm:mt-0.5 sm:text-[16px]">
-              {new Date(post.createdAt).toLocaleDateString()}
+            <h4 className="pt-0.5 px-1 text-[12px] text-neutral-400 sm:mt-0.5 sm:text-[16px]">
+              {displayDate}
             </h4>
           </div>
 
           <div className="flex flex-row items-end justify-end">
             {isOwner && (
-              <div className="mt-2 flex w-full flex-row justify-around gap-2">
+              <div className="flex w-full flex-row justify-around gap-2">
                 <Link
                   className="pt-0.5 text-cyan-500"
                   href={`/editPost/${post._id}`}
@@ -82,10 +109,24 @@ export default function PostCard({ post }) {
         </div>
 
         <div>
-          <p className="my-4 px-1 text-lg text-neutral-600 sm:pl-0">
+          <p className="my-1 px-1 text-lg text-neutral-600 sm:pl-0">
             {post.body}
           </p>
           <div className="my-4 cursor-pointer text-neutral-600"></div>
+          {post.images && post.images.length > 0 && (
+            <div className="mt-2 overflow-hidden rounded-xl">
+              {post.images.map((image, index) => (
+                <Image
+                  key={index}
+                  src={image}
+                  alt="Post image"
+                  width={500} // Set appropriate layout/sizing
+                  height={300}
+                  className="w-full object-cover"
+                />
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="flex flex-row justify-between px-2 pt-2">

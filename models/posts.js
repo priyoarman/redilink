@@ -4,7 +4,7 @@ import User from "./user";
 const CommentSchema = new Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    email: { type: String, required: true },
+    username: { type: String, required: true },
     body: { type: String, required: true },
   },
   { timestamps: true },
@@ -14,7 +14,9 @@ const postsSchema = new Schema(
   {
     body: {
       type: String,
-      required: true,
+      required: function () {
+        return !this.images || this.images.length === 0;
+      },
     },
     images: [
       {
@@ -29,7 +31,7 @@ const postsSchema = new Schema(
       type: String,
       required: true,
     },
-    authorEmail: {
+    authorUsername: {
       type: String,
     },
     likes: [

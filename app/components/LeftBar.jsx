@@ -1,11 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
-import { BiHomeCircle } from "react-icons/bi";
-import { CgHashtag } from "react-icons/cg";
-import { IoMdNotificationsOutline } from "react-icons/io";
-import { HiOutlineEnvelope } from "react-icons/hi2";
-import { IoPersonOutline } from "react-icons/io5";
-import { BsThreeDots } from "react-icons/bs";
+import { GoHomeFill } from "react-icons/go";
+import { MdExplore } from "react-icons/md";
+import { FaBell } from "react-icons/fa";
+import { FaEnvelope } from "react-icons/fa6";
+import { FaUserCircle } from "react-icons/fa";
 import MiniProfile from "./MiniProfile";
 
 const LeftBar = () => {
@@ -27,23 +26,23 @@ const LeftBar = () => {
         </Link>
         <Link
           href={"/"}
-          className="flex w-full items-center justify-center space-x-2 rounded-3xl px-2 py-2 pl-4 text-2xl font-bold text-gray-800 transition duration-200 hover:bg-gray-200 sm:justify-start lg:w-fit lg:px-4 lg:text-xl"
+          className="flex w-full items-center justify-center space-x-2 rounded-3xl px-2 py-2 mt-2 pl-4 text-2xl font-bold text-gray-800 transition duration-200 hover:bg-gray-200 sm:justify-start lg:w-fit lg:px-4 lg:text-xl"
         >
-          <BiHomeCircle />
+          <GoHomeFill className="text-2xl" />
           <p className="hidden lg:block">Home</p>
         </Link>
         <Link
           href={"/explore"}
           className="flex w-full items-center justify-center space-x-2 rounded-3xl px-2 py-2 pl-4 text-2xl font-bold text-gray-800 transition duration-200 hover:bg-gray-200 sm:justify-start lg:w-fit lg:px-4 lg:text-xl"
         >
-          <CgHashtag />
+          <MdExplore className="text-2xl" />
           <p className="hidden lg:block">Explore</p>
         </Link>{" "}
         <Link
           href={"/notifications"}
           className="flex w-full items-center justify-center space-x-2 rounded-3xl px-2 py-2 pl-4 text-2xl font-bold text-gray-800 transition duration-200 hover:bg-gray-200 sm:justify-start lg:w-fit lg:px-4 lg:text-xl"
         >
-          <IoMdNotificationsOutline />
+          <FaBell className="text-2xl" />
 
           <p className="hidden lg:block">Notifications</p>
         </Link>
@@ -51,21 +50,21 @@ const LeftBar = () => {
           href={"/messages"}
           className="flex w-full items-center justify-center space-x-2 rounded-3xl px-2 py-2 pl-4 text-2xl font-bold text-gray-800 transition duration-200 hover:bg-gray-200 sm:justify-start lg:w-fit lg:px-4 lg:text-xl"
         >
-          <HiOutlineEnvelope />
+          <FaEnvelope className="text-xl" />
 
-          <p className="hidden lg:block">Messages</p>
+          <p className="hidden lg:block ml-1">Messages</p>
         </Link>
         <Link
           href={"/profile"}
           className="flex w-full items-center justify-center space-x-2 rounded-3xl px-2 py-2 pb-4 pl-4 text-2xl font-bold text-gray-800 transition duration-200 hover:bg-gray-200 sm:justify-start sm:pb-2 lg:w-fit lg:px-4 lg:text-xl"
         >
-          <IoPersonOutline />
+          <FaUserCircle className="text-xl" />
 
-          <p className="hidden lg:block">Profile</p>
+          <p className="hidden lg:block ml-1">Profile</p>
         </Link>
       </div>
 
-      <div className="hidden w-full cursor-pointer flex-row justify-between gap-2 rounded-full px-2 py-2 hover:bg-gray-200 lg:flex">
+      <div className="hidden w-full flex-row justify-between gap-2 rounded-sm px-2 py-2 lg:flex">
         <MiniProfile />
       </div>
     </div>

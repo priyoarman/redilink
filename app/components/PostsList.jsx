@@ -1,5 +1,6 @@
 import connectMongoDB from "@/lib/mongodb";
 import Post from "@/models/posts";
+import User from "@/models/user";
 import PostCard from "./PostCard";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
@@ -11,15 +12,28 @@ export default async function PostsList() {
     .sort({ createdAt: -1 })
     .lean({ virtuals: true });
 
+  // Fetch profile images for authors to show avatars
+  const authorIds = Array.from(new Set(rawPosts.map((p) => p.authorId))).filter(Boolean);
+  const users = authorIds.length
+    ? await User.find({ _id: { $in: authorIds } }).lean()
+    : [];
+  const userById = {};
+  users.forEach((u) => {
+    userById[u._id.toString()] = u;
+  });
+
   const posts = rawPosts.map((doc) => {
     const likesArray = Array.isArray(doc.likes) ? doc.likes : [];
+    const author = userById[doc.authorId];
 
     return {
       _id: doc._id.toString(),
       body: doc.body,
+      images: doc.images || [],
       authorId: doc.authorId,
       authorName: doc.authorName,
-      authorEmail: doc.authorEmail,
+      authorUsername: doc.authorUsername,
+      authorImage: author?.profileImage || null,
       createdAt: doc.createdAt.toISOString(),
       updatedAt: doc.updatedAt.toISOString(),
       likesCount: doc.likesCount ?? likesArray.length,
@@ -31,7 +45,7 @@ export default async function PostsList() {
   });
 
   return (
-    <div className="z-20 bg-gray-50 pt-6 pb-12">
+    <div className="z-20 bg-gray-50 pt-2 pb-12">
       {posts.map((post) => (
         <PostCard key={post._id} post={post} />
       ))}

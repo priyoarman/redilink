@@ -3,6 +3,7 @@ import Post from "@/models/posts";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { NextResponse } from "next/server";
+import cloudinary from "@/lib/cloudinary";
 
 export async function GET(request, { params }) {
   await connectMongoDB();
@@ -23,7 +24,6 @@ export async function PUT(request, { params }) {
   if (!session)
     return NextResponse.json({ error: "Not signed in" }, { status: 401 });
 
-  const { newBody } = await request.json();
   const { id } = await params;
   const post = await Post.findById(id);
 
@@ -32,10 +32,55 @@ export async function PUT(request, { params }) {
 
   if (post.authorId !== session.user.id)
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  // Support both JSON body updates and multipart/form-data with an image upload
+  const contentType = request.headers.get("content-type") || "";
+  if (contentType.includes("multipart/form-data")) {
+    // handle form data with possible image
+    const data = await request.formData();
+    const newBody = data.get("newBody");
+    const file = data.get("image");
 
-  post.body = newBody;
-  await post.save();
-  return NextResponse.json({ message: "Post Updated" }, { status: 200 });
+    if (newBody !== null) post.body = newBody;
+
+    if (file && file.size) {
+      // upload to cloudinary
+      try {
+        const uploadToCloudinary = (file) => {
+          return new Promise((resolve, reject) => {
+            file.arrayBuffer().then((buffer) => {
+              const stream = cloudinary.uploader.upload_stream(
+                {
+                  folder: "redilink_posts",
+                  resource_type: "auto",
+                },
+                (error, result) => {
+                  if (error) return reject(error);
+                  return resolve(result);
+                }
+              );
+              stream.end(Buffer.from(buffer));
+            });
+          });
+        };
+
+        const uploadResult = await uploadToCloudinary(file);
+        post.images = post.images || [];
+        post.images.push(uploadResult.secure_url);
+      } catch (err) {
+        console.error("Cloudinary upload failed:", err);
+        return NextResponse.json({ error: "Image upload failed" }, { status: 500 });
+      }
+    }
+
+    await post.save();
+    return NextResponse.json({ message: "Post Updated" }, { status: 200 });
+  } else {
+    // JSON update (no image)
+    const { newBody } = await request.json();
+    if (newBody !== undefined) post.body = newBody;
+    await post.save();
+    return NextResponse.json({ message: "Post Updated" }, { status: 200 });
+  }
 }
 
 export async function DELETE(request, { params }) {
