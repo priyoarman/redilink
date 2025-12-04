@@ -22,7 +22,7 @@ const RightBar = () => {
       <form onSubmit={handleSubmit} className="group relative h-fit w-full">
         <input
           id="searchBox"
-          className="h-full w-full rounded-xl border border-gray-200 bg-gray-50 py-2 pr-4 pl-14 text-gray-800"
+          className="h-full w-full rounded-xl border border-default bg-panel py-2 pr-4 pl-14 text-primary"
           type="text"
           placeholder="Search"
           value={input}
@@ -30,7 +30,7 @@ const RightBar = () => {
         />
         <label
           htmlFor="searchBox"
-          className="peer-focus:text-primary absolute top-0 left-0 flex h-full items-center justify-center p-4 text-gray-400"
+          className="peer-focus:text-primary absolute top-0 left-0 flex h-full items-center justify-center p-4 text-muted"
         >
           <BsSearch className="h-5 w-5" />
         </label>

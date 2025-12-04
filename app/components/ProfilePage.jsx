@@ -61,7 +61,7 @@ const ProfilePage = ({ posts }) => {
   };
 
   return (
-    <div className="sticky sm:w-2/4 flex flex-col container border-r-1 border-gray-200">
+    <div className="sticky sm:w-2/4 flex flex-col container border-r-1 border-default">
       <div className="w-full">
         <div className="flex flex-row w-full h-42 justify-center items-center bg-gray-500 text-2xl text-white">
           {session?.user?.image ? (
@@ -96,26 +96,26 @@ const ProfilePage = ({ posts }) => {
         </div>
       </div>
 
-      <div className="p-4 flex flex-col gap-1 mt-[-72] bg-gray-50">
+      <div className="p-4 flex flex-col gap-1 mt-[-72] bg-panel">
         <div className="pb-2">
-          <div className="text-xl text-gray-800 font-bold">{session?.user?.name}</div>
-          <div className="text-[17px] text-gray-700 font-medium">
+          <div className="text-xl text-primary font-bold">{session?.user?.name}</div>
+          <div className="text-[17px] text-primary font-medium">
             {session?.user?.username ? `@${session.user.username}` : "@username"}
           </div>
         </div>
 
-        <div className="flex felx-row w-fit text-[16px] text-gray-800">
+        <div className="flex felx-row w-fit text-[16px] text-primary">
           Here goes my short bio for Y
         </div>
 
         <div className="flex felx-row gap-4 w-fit text-[16px]">
           <div className="flex flex-row gap-2">
-            <p className="flex flex-row pt-1 text-gray-500"><FaLink/></p>
+            <p className="flex flex-row pt-1 text-muted"><FaLink/></p>
             <a href="https://github.com/priyoarman" className="text-blue-400 hover:underline cursor-pointer">github.com/priyoarman</a>
           </div>
           <div className="sm:flex flex-row gap-2 hidden">
-            <p className="flex flex-row pt-1 text-gray-600"><IoCalendarOutline/></p>
-            <a className="text-gray-600 cursor-pointer">Joined October 2024</a>
+            <p className="flex flex-row pt-1 text-muted"><IoCalendarOutline/></p>
+            <a className="text-muted cursor-pointer">Joined October 2024</a>
           </div>
         </div>
 
@@ -126,14 +126,14 @@ const ProfilePage = ({ posts }) => {
         </div>
       </div>
 
-      <h2 className="text-gray-700 text-xl font-bold px-4 py-4 mb-4 border-y-1 border-gray-200">Posts</h2>
+      <h2 className="text-primary text-xl font-bold px-4 py-4 mb-4 border-y-1 border-default">Posts</h2>
 
       {posts.length ? (
-        <div className="z-20 bg-gray-50 pb-2">
+        <div className="z-20 bg-panel pb-2">
           {posts.map((post) => (
             <div
               key={post._id}
-              className="z-20 flex w-full flex-row gap-2 border-slate-300 bg-gray-50 shadow-xs transition-all hover:bg-blue-50 hover:shadow-sm sm:gap-0"
+              className="z-20 flex w-full flex-row gap-2 border-slate-300 bg-panel shadow-xs transition-all hover:shadow-sm sm:gap-0 hover-panel"
             >
               <div className="flex w-1/12 flex-col items-start justify-items-start px-4 py-4">
                 <div className="flex h-10 w-10 rounded-full bg-neutral-600"></div>
@@ -195,7 +195,7 @@ const ProfilePage = ({ posts }) => {
                     className={`flex cursor-pointer flex-row justify-center gap-1.5 ${
                       liked[post._id]
                         ? "text-red-600"
-                        : "text-gray-500 hover:text-red-600"
+                        : "text-muted hover:text-red-600"
                     }`}
                     onClick={() => handleLike(post._id)}
                   >
@@ -208,7 +208,7 @@ const ProfilePage = ({ posts }) => {
                   </div>
 
                   <Link
-                    className="flex cursor-pointer flex-row justify-center gap-1.5 text-gray-500 hover:text-blue-500"
+                    className="flex cursor-pointer flex-row justify-center gap-1.5 text-muted hover:text-blue-500"
                     href={`/posts/${post._id}/comments`}
                   >
                     <AiOutlineComment className="cursor-pointer text-lg font-bold" />
@@ -217,14 +217,14 @@ const ProfilePage = ({ posts }) => {
                     </p>
                   </Link>
 
-                  <div className="flex cursor-pointer flex-row justify-center gap-1.5 text-gray-500 hover:text-green-500">
+                  <div className="flex cursor-pointer flex-row justify-center gap-1.5 text-muted hover:text-green-500">
                     <button className="flex flex-row items-center justify-center justify-items-center">
                       <AiOutlineRetweet className="cursor-pointer text-lg font-bold" />
                     </button>
                     <p className="font-semi mt-0.5 flex flex-row text-sm">0</p>
                   </div>
 
-                  <div className="flex cursor-pointer flex-row justify-center gap-1.5 text-gray-500 hover:text-yellow-500">
+                  <div className="flex cursor-pointer flex-row justify-center gap-1.5 text-muted hover:text-yellow-500">
                     <button className="flex flex-row items-center justify-center justify-items-center">
                       <AiOutlineEye className="cursor-pointer text-lg font-bold" />
                     </button>
@@ -236,7 +236,7 @@ const ProfilePage = ({ posts }) => {
           ))}
         </div>
       ) : (
-        <p className="text-gray-700 text-lg mx-4 mb-4">
+        <p className="text-primary text-lg mx-4 mb-4">
           You haven't posted anything yet.
         </p>
       )}

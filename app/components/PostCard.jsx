@@ -26,14 +26,20 @@ export default function PostCard({ post }) {
     const createdAt = new Date(post.createdAt);
     const now = new Date();
     const diffMs = now - createdAt;
-    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
-    if (diffDays <= 0) {
-      displayDate = "Today";
-    } else if (diffDays === 1) {
-      displayDate = "1d ago";
+    const diffSeconds = Math.floor(diffMs / 1000);
+    const diffMinutes = Math.floor(diffSeconds / 60);
+    const diffHours = Math.floor(diffMinutes / 60);
+    const diffDays = Math.floor(diffHours / 24);
+
+    if (diffDays >= 1) {
+      displayDate = diffDays === 1 ? "1d ago" : `${diffDays}d ago`;
+    } else if (diffHours >= 1) {
+      displayDate = `${diffHours}h ago`;
+    } else if (diffMinutes >= 1) {
+      displayDate = `${diffMinutes}m ago`;
     } else {
-      displayDate = `${diffDays}d ago`;
+      displayDate = "Just now";
     }
   }
 
@@ -61,7 +67,7 @@ export default function PostCard({ post }) {
   };
 
   return (
-    <div className="z-20 flex w-full flex-row gap-2 border-slate-300 bg-gray-50 shadow-xs transition-all hover:bg-blue-50 hover:shadow-sm sm:gap-0">
+    <div className="z-20 flex w-full flex-row gap-2 border-slate-300 bg-panel shadow-xs transition-all hover:shadow-sm sm:gap-0 hover-panel">
       <div className="flex w-1/12 flex-col items-start justify-items-start pl-4 py-4">
         {post.authorImage ? (
           <img
@@ -109,7 +115,7 @@ export default function PostCard({ post }) {
         </div>
 
         <div>
-          <p className="my-1 px-1 text-lg text-neutral-600 sm:pl-0">
+          <p className="my-1 px-1 text-[16px] text-neutral-600 sm:pl-0">
             {post.body}
           </p>
           <div className="my-4 cursor-pointer text-neutral-600"></div>
@@ -131,7 +137,7 @@ export default function PostCard({ post }) {
 
         <div className="flex flex-row justify-between px-2 pt-2">
           <div
-            className={`flex cursor-pointer flex-row justify-center gap-1.5 ${liked ? "text-red-600" : "text-gray-500 hover:text-red-600"}`}
+            className={`flex cursor-pointer flex-row justify-center gap-1.5 ${liked ? "text-red-600" : "text-muted hover:text-red-600"}`}
             onClick={handleLike}
           >
             {liked ? (
@@ -143,7 +149,7 @@ export default function PostCard({ post }) {
           </div>
 
           <Link
-            className="flex cursor-pointer flex-row justify-center gap-1.5 text-gray-500 hover:text-blue-500"
+            className="flex cursor-pointer flex-row justify-center gap-1.5 text-muted hover:text-blue-500"
             href={`/posts/${post._id}/comments`}
           >
             <AiOutlineComment className="cursor-pointer text-lg font-bold" />
@@ -152,14 +158,14 @@ export default function PostCard({ post }) {
             </p>
           </Link>
 
-          <div className="flex cursor-pointer flex-row justify-center gap-1.5 text-gray-500 hover:text-green-500">
+          <div className="flex cursor-pointer flex-row justify-center gap-1.5 text-muted hover:text-green-500">
             <button className="flex flex-row items-center justify-center justify-items-center">
               <AiOutlineRetweet className="cursor-pointer text-lg font-bold" />
             </button>
             <p className="font-semi mt-0.5 flex flex-row text-sm">0</p>
           </div>
 
-          <div className="flex cursor-pointer flex-row justify-center gap-1.5 text-gray-500 hover:text-yellow-500">
+          <div className="flex cursor-pointer flex-row justify-center gap-1.5 text-muted hover:text-yellow-500">
             <button className="flex flex-row items-center justify-center justify-items-center">
               <AiOutlineEye className="cursor-pointer text-lg font-bold" />
             </button>

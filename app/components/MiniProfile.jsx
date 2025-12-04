@@ -7,6 +7,7 @@ import Image from "next/image";
 import { BsThreeDots } from "react-icons/bs";
 import { IoSettingsSharp } from "react-icons/io5";
 import { IoLogOut } from "react-icons/io5";
+import ThemeToggle from "./ThemeToggle";
 
 
 const MiniProfile = () => {
@@ -26,32 +27,23 @@ const MiniProfile = () => {
   if (status === "loading") return null;
 
   return (
-    <div
-      ref={ref}
-      className="relative flex items-center justify-between gap-2 w-full px-2 py-2"
-    >
+    <div ref={ref} className="relative flex items-center gap-3">
       {open && (
-        <div className="absolute right-0 bottom-full mb-1 w-full rounded-lg bg-gray-200 z-50 flex flex-col overflow-hidden">
-          <Link
-            href="/profile"
-            className="w-full flex justify-center items-center gap-1 text-center text-[16px] font-bold py-2 hover:bg-gray-100 cursor-pointer hover:text-cyan-500"
-            onClick={() => setOpen(false)}
-          >
-            <IoSettingsSharp /> Settings
-          </Link>
+        <div className="absolute right-0 bottom-full mb-1 w-full rounded-lg bg-panel z-50 flex flex-col overflow-hidden border-default border shadow-lg">
+          <div className="w-full flex justify-center items-center gap-1 text-center text-[16px] font-bold py-2 px-2 border-b border-default cursor-pointer">
+            <ThemeToggle />
+          </div>
           <button
             onClick={() => {
               setOpen(false);
               signOut();
             }}
-            className="w-full flex justify-center items-center gap-1 text-center text-[16px] font-bold py-2 hover:bg-gray-100 cursor-pointer hover:text-red-500"
+            className="w-full flex justify-center items-center gap-1 text-center text-[16px] font-bold py-2 hover-panel hover:text-red-500 cursor-pointer text-primary"
           >
             <IoLogOut /> Logout
           </button>
         </div>
       )}
-
-      {/* Avatar */}
       <div className="flex-shrink-0">
         {user?.image ? (
           <Image
@@ -70,10 +62,10 @@ const MiniProfile = () => {
 
       {/* Name and Username */}
       <div className="flex flex-col flex-grow min-w-0">
-        <div className="text-[16px] font-bold text-gray-800 truncate">
+        <div className="text-[16px] font-bold text-primary truncate">
           {user?.name ?? "No User"}
         </div>
-        <div className="text-[14px] font-medium text-gray-600 truncate">
+        <div className="text-[14px] font-medium text-muted truncate">
           @{user?.username ?? "nouser"}
         </div>
       </div>
@@ -82,7 +74,7 @@ const MiniProfile = () => {
       <div className="flex-shrink-0">
         <button
           onClick={() => setOpen((o) => !o)}
-          className="p-1 rounded-full hover:bg-gray-400 flex items-center justify-center cursor-pointer"
+          className="p-1 rounded-full hover-panel flex items-center justify-center cursor-pointer"
           aria-label="Open profile menu"
         >
           <BsThreeDots />

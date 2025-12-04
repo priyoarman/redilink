@@ -12,7 +12,6 @@ export default async function PostsList() {
     .sort({ createdAt: -1 })
     .lean({ virtuals: true });
 
-  // Fetch profile images for authors to show avatars
   const authorIds = Array.from(new Set(rawPosts.map((p) => p.authorId))).filter(Boolean);
   const users = authorIds.length
     ? await User.find({ _id: { $in: authorIds } }).lean()
@@ -45,7 +44,7 @@ export default async function PostsList() {
   });
 
   return (
-    <div className="z-20 bg-gray-50 py-2">
+    <div className="z-20 bg-panel py-2 pb-16 sm:pb-0">
       {posts.map((post) => (
         <PostCard key={post._id} post={post} />
       ))}

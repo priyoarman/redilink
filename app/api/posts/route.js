@@ -36,8 +36,9 @@ export async function POST(request) {
   const data = await request.formData();
   const body = data.get("body");
   const file = data.get("image");
+  const gifUrl = data.get("gifUrl");
 
-  if (!body && !file) {
+  if (!body && !file && !gifUrl) {
     return NextResponse.json(
       { error: "Post cannot be empty" },
       { status: 400 }
@@ -46,7 +47,7 @@ export async function POST(request) {
 
   let imageUrls = [];
 
-  // 3. Upload image if it exists
+  // Upload image if it exists
   if (file) {
     try {
       const uploadResult = await uploadToCloudinary(file);
@@ -58,6 +59,11 @@ export async function POST(request) {
         { status: 500 }
       );
     }
+  }
+
+  // If a GIF URL from Tenor was provided, use it directly
+  if (gifUrl) {
+    imageUrls.push(gifUrl);
   }
 
   const post = await Post.create({
