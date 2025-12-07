@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { PiImageSquareBold } from "react-icons/pi";
 
 const EditPostPage = ({ id, body }) => {
   const [newBody, setNewBody] = useState(body);
@@ -78,7 +79,7 @@ const EditPostPage = ({ id, body }) => {
           </div>
         )}
 
-        <div className="flex flex-row items-center justify-between gap-2">
+        <div className="flex flex-row items-center justify-between gap-2 pl-6 text-2xl text-cyan-500">
           <input
             type="file"
             id="editImageInput"
@@ -86,9 +87,9 @@ const EditPostPage = ({ id, body }) => {
             onChange={handleImageChange}
             className="hidden"
           />
-          <label htmlFor="editImageInput" className="text-blue-500 cursor-pointer">
-            Add/Change Image
-          </label>
+              <label htmlFor="editImageInput">
+                <PiImageSquareBold className="cursor-pointer hover:text-muted" />
+              </label>
 
           <div className="flex flex-row justify-end-safe">
             <button className="mx-2 my-2 h-10 cursor-pointer rounded-3xl bg-gray-500 px-4 text-sm font-bold text-white hover:bg-blue-400">

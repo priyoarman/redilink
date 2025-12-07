@@ -14,7 +14,6 @@ export default function ThemeToggle() {
         setTheme(stored);
         document.documentElement.classList.toggle("theme-dark", stored === "dark");
       } else {
-        // default to dark if user prefers dark
         const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
         const initial = prefersDark ? "dark" : "light";
         setTheme(initial);
@@ -41,7 +40,7 @@ export default function ThemeToggle() {
       className="flex items-center gap-2" 
       style={{background: "transparent", color: "var(--text)" }}
     >
-      <span>Theme :</span>
+      <span className="hidden sm:flex">Theme :</span>
       {theme === "dark" ? <FaMoon /> : theme === "light" ? <IoMdSunny /> : <span>...</span>}
     </button>
   );

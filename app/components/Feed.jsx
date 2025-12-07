@@ -4,6 +4,7 @@ import MiniProfile from "./MiniProfile";
 import PostsList from "./PostsList";
 import Link from "next/link";
 import Image from "next/image";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Feed() {
   return (
@@ -23,8 +24,8 @@ export default function Feed() {
           />
           {/* <p className="hidden lg:block">Twitter</p> */}
         </Link>
-        <div className="mr-2 flex h-10 w-fit cursor-pointer rounded-2xl border-1 border-default px-3 pt-1">
-          🔆
+        <div className="mr-2 flex h-10 w-fit cursor-pointer rounded-full border border-default px-[9px]">
+          <ThemeToggle />
         </div>
       </div>
       <AddPost />
