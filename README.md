@@ -4,9 +4,13 @@ Live Demo: https://redilink.vercel.app/
 
 ## 🚀 Features
 
-* **User Authentication** via NextAuth (email/password credentials)
+* **User Authentication** (Email/Password & Google/Github OAuth)
 * **Create, Read & List Tweets**
+* **Upload Images With Cloudinary or Fetch GIF From Tenor API**
+* **Edit (Update) & Delete Own Tweets If Authenticated**
+* **Like and Comment Tweets**
 * **User Profiles** with their own tweet feeds
+* **Theme Switcher** (Dark/Light mode)
 * **Responsive UI** using Tailwind CSS
 * **Server‑side API routes** in Next.js
 * **Database ORM** powered by Mongoose
@@ -15,8 +19,8 @@ Live Demo: https://redilink.vercel.app/
 
 | Layer          | Technology                  |
 | -------------- | --------------------------- |
-| Framework      | Next.js 14 (App Router)     |
-| Styling        | Tailwind CSS                |
+| Framework      | Next.js 16 (App Router)     |
+| Styling        | Tailwind CSS, Custom CSS    |
 | Authentication | NextAuth.js                 |
 | ORM / Database | Mongoose (MongoDB)          |
 | Language       | JavaScript                  |
@@ -27,8 +31,8 @@ Live Demo: https://redilink.vercel.app/
 1. **Fork & clone** this repo:
 
    ```bash
-   git clone https://github.com/priyoarman/anothertwitter.git
-   cd anothertwitter
+   git clone https://github.com/priyoarman/redilink.git
+   cd redilink
    ```
 
 2. **Install dependencies**:
@@ -46,13 +50,26 @@ Live Demo: https://redilink.vercel.app/
    MONGODB_URI="mongodb+srv://..."
    NEXTAUTH_SECRET="a-long-random-string"
    NEXTAUTH_URL="http://localhost:3000"
+   NEXT_PUBLIC_APP_URL="http://localhost:3000"
+   NEXT_PUBLIC_NEWS_API=2c2d5c20c3a84c6e832a2e15d0274587
    ```
 
    If you use OAuth providers (e.g. GitHub, Google), also add:
 
    ```env
-   GITHUB_ID="…"
-   GITHUB_SECRET="…"
+   GOOGLE_CLIENT_ID="your-google-cloud-console-generated-id"
+   GOOGLE_CLIENT_SECRET="your-google-cloud-console-generated-secret"
+   GITHUB_CLIENT_ID="your-github-developer-generated-id"
+   GITHUB_CLIENT_SECRET="your-github-developer-generated-secret"
+   ```
+
+   To get the feature of IMAGE upload, and GIF fetch, add:
+
+   ```env
+   CLOUDINARY_CLOUD_NAME="your-cloudinary-generated-name"
+   CLOUDINARY_API_KEY="your-cloudinary-generated-key"
+   CLOUDINARY_API_SECRET="your-cloudinary-generated-secret"
+   TENOR_API_KEY="your-tenor-generated-key"
    ```
 
 4. **Run mongoose migrations** (if you're using MongoDB):
@@ -80,7 +97,7 @@ Live Demo: https://redilink.vercel.app/
 
 ## 📈 Deploy
 
-This app deploys seamlessly to **Vercel**:
+This app is deployed to **Vercel**:
 
 1. Push your code to GitHub.
 2. Import the repo in Vercel.
@@ -93,7 +110,7 @@ Contributions, issues and feature requests are welcome!
 
 1. Fork the repo
 2. Create your feature branch (`git checkout -b feature/fooBar`)
-3. Commit your changes (`git commit -am 'Add some fooBar'`)
+3. Commit your changes (`git commit -a -m 'Add some fooBar'`)
 4. Push to the branch (`git push origin feature/fooBar`)
 5. Open a Pull Request
 
