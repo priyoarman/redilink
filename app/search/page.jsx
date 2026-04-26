@@ -2,16 +2,14 @@
 
 import { Suspense } from "react";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+// export const dynamic = "force-dynamic";
+// export const revalidate = 0;
 
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import PostCard from "../components/PostCard";
-import LeftBar from "../components/LeftBar";
-import RightBar from "../components/RightBar";
 import { BsSearch } from "react-icons/bs";
 
 const SearchResults = () => {
