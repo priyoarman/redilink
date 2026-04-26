@@ -24,6 +24,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "baseline-browser-mapping": "^2.10.22",
     "eslint": "^9",
     "eslint-config-next": "15.3.3",
     "prettier": "^3.6.2",

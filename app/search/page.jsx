@@ -1,5 +1,10 @@
 "use client";
 
+import { Suspense } from "react";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -192,4 +197,18 @@ const SearchResults = () => {
   );
 };
 
-export default SearchResults;
+export default function SearchPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex h-screen items-center justify-center bg-panel">
+          <div className="animate-spin">
+            <BsSearch size={32} className="text-secondary" />
+          </div>
+        </div>
+      }
+    >
+      <SearchResults />
+    </Suspense>
+  );
+}
