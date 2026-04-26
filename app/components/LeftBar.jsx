@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { GoHomeFill } from "react-icons/go";
 import { MdExplore } from "react-icons/md";
+import { BsSearch } from "react-icons/bs";
 import { FaBell } from "react-icons/fa";
 import { FaEnvelope } from "react-icons/fa6";
 import { FaUserCircle } from "react-icons/fa";
@@ -37,7 +38,14 @@ const LeftBar = () => {
         >
           <MdExplore className="text-2xl" />
           <p className="hidden lg:block">Explore</p>
-        </Link>{" "}
+        </Link>
+        <Link
+          href={"/search"}
+          className="flex w-full items-center justify-center space-x-2 rounded-3xl px-2 py-2 pl-4 text-2xl font-bold text-primary transition duration-200 hover-accent sm:justify-start lg:w-fit lg:px-4 lg:text-xl"
+        >
+          <BsSearch className="text-2xl" />
+          <p className="hidden lg:block">Search</p>
+        </Link>
         <Link
           href={"/notifications"}
           className="flex w-full items-center justify-center space-x-2 rounded-3xl px-2 py-2 pl-4 text-2xl font-bold text-primary transition duration-200 hover-accent sm:justify-start lg:w-fit lg:px-4 lg:text-xl"

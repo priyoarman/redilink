@@ -9,8 +9,11 @@ export default function News() {
   useEffect(() => {
     fetch("/api/news?country=us&category=business")
       .then((res) => res.json())
-      .then((data) => setNews(data.articles))
-      .catch(console.error);
+      .then((data) => setNews(Array.isArray(data.articles) ? data.articles : []))
+      .catch((error) => {
+        console.error("Failed to fetch news:", error);
+        setNews([]);
+      });
   }, []);
   
   return (

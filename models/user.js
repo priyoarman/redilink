@@ -40,6 +40,19 @@ const userSchema = new Schema(
     },
     following: [{ type: Schema.Types.ObjectId, ref: "User" }],
     followers: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    searchHistory: [
+      {
+        query: String,
+        type: {
+          type: String,
+          enum: ["post", "user"],
+        },
+        createdAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
   },
   {
     timestamps: true,
